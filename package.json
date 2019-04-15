@@ -1,0 +1,16 @@
+{
+  "name": "create-next-example-app",
+  "scripts": {
+    "dev": "node src/server/server.js",
+    "build": "next build ./src",
+    "start": "NODE_ENV=production node ./src/server.js"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "next": "^8.0.4",
+    "next-routes": "^1.4.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "slugify": "^1.3.4"
+  }
+}
