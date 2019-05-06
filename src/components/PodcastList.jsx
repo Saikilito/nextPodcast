@@ -9,7 +9,9 @@ class PodcastList extends Component {
             {
                 audioClips.map(clip=>(
                     <Link href={`/podcast?id=${clip.id}`} prefetch key={clip.id} >
-                        <a className="podcast">
+                        <a className="podcast"
+                            onClick
+                        >
                             <h3>{ clip.title }</h3>
                             <div className="meta">
                                 { Math.ceil(clip.duration / 60 )} Minutes

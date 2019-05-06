@@ -4,9 +4,16 @@ import 'isomorphic-fetch';
 import Error from './_error';
 import Layout from '../containers/Layout';
 import ChannelGrid from '../components/ChannelGrid';
-import PodcastList from '../components/PodcastList';
+import PodcastListWithClick from '../components/PodcastListWithclick';
+import PodcastPlayer from '../components/PodcastPlayer';
 
 class Channel extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      openPodcast : null
+    }
+  }
     static async getInitialProps({ query, res }){
         let idChannel = query.id;
         try{
@@ -37,15 +44,39 @@ class Channel extends Component {
           return { channel:null, audioClips:null, series:null, statusCode:503}
         }
     }
+
+    openPodcast = (e, podcast) => {
+      e.preventDefault();
+      this.setState({
+        openPodcast: podcast
+      })
+    }
+
+    onClosePodcast = (e) => {
+      e.preventDefault();
+      this.setState({
+        openPodcast: null
+      })
+    }
     render(){
         const { channel, audioClips, series, statusCode } = this.props
-        
+        const { openPodcast } = this.state;
+
         if(statusCode !== 200) return <Error statusCode={statusCode}/>
         return(
             <Fragment>
               <Layout title={ channel.title }>
                 
                 <div className="banner" style={{ backgroundImage: `url(${channel.urls.banner_image.original})` }} />
+                
+                {openPodcast && 
+                  <div className="modal">
+                    <PodcastPlayer
+                      clip={ openPodcast } 
+                      onClose={ this.onClosePodcast } 
+                    />
+                  </div>
+                }
                 <h1>{ channel.title }</h1>
                 
                 { series.length > 0 &&
@@ -56,7 +87,10 @@ class Channel extends Component {
                 }
 
                 <h2>Ultimos Podcasts</h2>
-                <PodcastList audioClips={ audioClips }/>
+                <PodcastListWithClick 
+                  audioClips={ audioClips }
+                  onClickPodcast={ this.openPodcast }
+                />
                 
 
               </Layout>
@@ -80,6 +114,16 @@ class Channel extends Component {
                   font-weight: 600;
                   margin: 0;
                   text-align: center;
+                }
+                .modal {
+                  overflow-y:hidden;
+                  position: fixed;
+                  top:0;
+                  left:0;
+                  right:0;
+                  bottom:0;
+                  background:balck;
+                  z-index: 99999;
                 }
               `}</style>
 
