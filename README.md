@@ -1,4 +1,4 @@
-# App de Podcats de Platzi
+# App Podcats AudioBoom
 
 App de Podcasts integrada con la API de AudioBoom 
 
